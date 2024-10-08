@@ -1,0 +1,11 @@
+#1st program
+result = (9**0.5)*5
+print(result)
+
+#2nd program
+num = 9.99
+print(num>9.98 and 1000!=1000.1)
+
+#3rd program
+print(2*2+2)
+print((2*2)+2)
