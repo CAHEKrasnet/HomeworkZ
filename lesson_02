@@ -7,5 +7,18 @@ num = 9.99
 print(num>9.98 and 1000!=1000.1)
 
 #3rd program
-print(2*2+2)
-print((2*2)+2)
+result1 = 2 * 2 + 2  # Результат: 6
+result2 = 2 * (2 + 2)  # Результат: 8
+
+if result1 == result2:
+    print(True)
+else:
+    print(False)
+
+#4th program
+string1 = '123.456'
+result=float(string1)
+result1=result*10
+result2=result1%10
+print(int(result2))
+
