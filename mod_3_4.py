@@ -33,7 +33,7 @@ def single_root_words(root_word, *other_words):
         
         if word in i.lower():
             same_words.append(i)
-            root_counter += 1
+            
         elif i.lower() in word:
             same_words.append(i)
     
