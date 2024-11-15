@@ -23,18 +23,16 @@ class House:
        self.number_of_floors = number_of_floors
 
     def go_to(self, new_floor):
-        floor = 1
+        
         #print(f'Здание {self.name} имеет {self.number_of_floors} этажа(ей)')
-        if new_floor < 1 or new_floor == 0:
+        if new_floor < 1 or new_floor == 0 or new_floor > self.number_of_floors:
             print(f'{new_floor} - такого этажа не существует')
+            return
         else:
-            for floor in range(new_floor):
+            for floor in range(1, new_floor+1):
                 if floor <= self.number_of_floors:
                     print(floor)
-                else:
-                    print(f'{new_floor} - такого этажа не существует')
-                    return
-            
+                
             print(f'Вы доехали до {new_floor} этажа')
 
 
