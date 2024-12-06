@@ -37,35 +37,33 @@ class Figure:
         
 
     def get_color(self):
-        return self.__color
+        return list(self.__color)
 
     def __is_valid_color(self, r, g, b):
 
-        if 0 < r <= 255 and 0 < g <= 255 and 0 < b <= 255:  # Цвет корректный
+
+        if isinstance(r, int) and isinstance(g, int) and isinstance(b, int) and 0 < r <= 255 and 0 < g <= 255 and 0 < b <= 255:  # Цвет корректный
             return True
         else:
             return False  # Цвет некорректный
 
     def set_color(self, r, g, b):
-        if self.__is_valid_color(r, g, b):
-            self.__color = []
-            self.__color.append(r)
-            self.__color.append(g)
-            self.__color.append(b)
+        if self.__is_valid_color(r, g, b):  
+            self.__color = [r, g, b]
             
-        return self.__color
+        
 
     def __is_valid_sides(self, *new_sides):
         
         new_sides_list = []
         for i in new_sides:
-            if type(i) == tuple:
+            if type(i) == tuple or type(i) == list:
                 for j in i:
                     new_sides_list.append(j)
         
         for i in range(0, len(new_sides_list)):
             if new_sides_list[i] <= 0:
-                print(f'Мы в цикле {i}')
+                #print(f'Мы в цикле {i}')
                 new_sides_list.pop(new_sides_list[i])
                 
         
@@ -78,38 +76,57 @@ class Figure:
 
 
     def get_sides(self):
-        if isinstance(self, Cube):
-            #self.__sides = self.cube_sides
+        if isinstance(self, Circle):
             return self.__sides
-        elif isinstance(self, Triangle):
-            return self.__sides
+        elif isinstance(self, Cube):
+            sides_list = []
+            
+            for i in range(0, self.sides_count):
+                
+                sides_list.append(self.cube_sides[i])
+            self.__sides = sides_list
+            return list(self.__sides)
         else:
             return list(self.__sides)
 
     def __len__(self):
-        return sum(self.__sides)
+        if isinstance(self, Circle):
+            return self.__radius
+        else:
+            return sum(self.__sides)
 
     def set_sides(self, *new_sides):
-        print("Мы в функции SET")
-        print(type(new_sides))
-        print(new_sides)
+    
         new_sides_list = []
         for i in new_sides:
-            print(f'Тип элемента в new_sides: {type(i)}')
+            
             if type(i) == tuple or type(i) == list:
                 for j in i:
-                    print(f'Тип элемента j = {j} = {type(j)}')
+                    
                     new_sides_list.append(j)
             elif type(i) == int:
                 new_sides_list = new_sides
                 
         
-        print(f'Список new_sides_list in SET = {new_sides_list}')
+
         
         if self.__is_valid_sides(new_sides):
-            print("Мы в функции SET, проверка __is_valid_sides")
+            
             self.__sides = new_sides
-            print(f'new self sides SET: {self.__sides}')    
+            if isinstance(self, Cube):
+                for i in range(0, self.sides_count):
+                    
+                    self.cube_sides[i] = new_sides_list[i]
+            
+            
+            if isinstance(self, Circle):
+                self.__sides = new_sides_list[0]
+                self.__radius = new_sides_list[0]
+            
+            if isinstance(self, Triangle):
+                for i in range(0, self.sides_count):
+                    self.__sides[i] = new_sides_list[i]
+                
         return self.__sides
 
 
@@ -133,14 +150,13 @@ class Cube(Figure):
     def __init__(self, color, *sides):
         super().__init__(color, *sides)
         self.__sides = [sides[0]] * self.sides_count # переопределение __sides
-        for i in range(0, self.sides_count):
+        
+        for i in range(0, self.sides_count):   # дублируем список сторон в cube_sides
             self.cube_sides.append(sides[0])
         self.__sides = self.cube_sides
         
 
     def get_volume(self):
-        print(self.__sides[0])
-        print(self.cube_sides[0])
         V = self.__sides[0] ** 3
         return V
 
@@ -160,41 +176,26 @@ class Triangle(Figure):
         return St
 
 
-circle1 = Circle((200, 200, 100), 10)  # (Цвет, стороны)
+
+circle1 = Circle((200, 200, 100), 10) # (Цвет, стороны)
 triangle1 = Triangle((155, 56, 30), 8, 3, 6)
 cube1 = Cube((222, 35, 130), 6)
-print(circle1.get_sides()) 
-print(triangle1.get_sides())
-print(cube1.get_sides())
-
-
-
-
-
 # Проверка на изменение цветов:
-
 circle1.set_color(55, 66, 77) # Изменится
 print(circle1.get_color())
-
-cube1.set_color(77, 500, 15) # Не изменится
+cube1.set_color(300, 70, 15) # Не изменится
 print(cube1.get_color())
 
 # Проверка на изменение сторон:
-
-cube1.set_sides(7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7)
+cube1.set_sides(5, 3, 12, 4, 5) # Не изменится
 print(cube1.get_sides())
-
-triangle1.set_sides(1, 2, 3)
-print(triangle1.get_sides())
-
-# # Изменится
+circle1.set_sides(15) # Изменится
 print(circle1.get_sides())
 
-# Проверка периметра:
+# Проверка периметра (круга), это и есть длина:
 print(len(circle1))
 
-# Проверка объёма:
-print(cube1.get_sides())
+# Проверка объёма (куба):
 print(cube1.get_volume())
 
 # площадь
